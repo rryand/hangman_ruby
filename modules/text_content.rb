@@ -13,14 +13,14 @@ module TextContent
     HEREDOC
   end
 
-  def round_display(turn, blanks)
+  def round_display
     clear_screen
     <<~HEREDOC
     #{WELCOME_TEXT}
 
-    #{blanks.center(50)}
+    #{@blanks.center(50)}
 
-    Guesses left: #{-turn + 8}
+    Guesses left: #{@guesses_left}
     HEREDOC
   end
 
@@ -36,14 +36,17 @@ module TextContent
 
   def game_message(message)
     {
-      guess: "Enter your guess: "
+      guess: "Enter your guess: ",
+      win: "You win! You saved the hangman!",
+      lose: "You lose. Better luck next time!"
     }[message]
   end
 
   def game_error(error)
-    print "ERROR: "
-    {
-      invalid_guess: "Please enter a letter."
+    message = {
+      invalid_guess: "Please enter a letter.",
+      existing_guess: "Guess already exists."
     }[error]
+    print "\e[K\e[41mERROR: #{message}\e[0m"
   end
 end
