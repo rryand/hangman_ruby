@@ -37,9 +37,16 @@ module TextContent
   def game_message(message)
     {
       guess: "Enter your guess: ",
+      play_again: "Play again?(y/n) "
+    }[message]
+  end
+
+  def game_result(result)
+    message = {
       win: "You win! You saved the hangman!",
       lose: "You lose. Better luck next time!"
-    }[message]
+    }[result]
+    "#{LINE}\n#{message.center(50)}\n#{LINE}"
   end
 
   def game_error(error)

@@ -6,14 +6,18 @@ class Game
   @@dictionary = File.readlines("lib/5desk.txt").keep_if { |word| word.length.between?(5, 12) }
 
   def play
-    @guesses_left = 7
-    @player = Player.new
+    playing = true
     puts welcome
     continue
-    select_word
-    while @guesses_left != 0
-      play_round
-      break if player_wins?
+    while playing
+      @player = Player.new
+      @guesses_left = 7
+      select_word
+      while @guesses_left != 0
+        play_round
+        break if player_wins?
+      end
+      playing = play_again?
     end
   end
 
@@ -62,10 +66,10 @@ class Game
   def player_wins?
     if @blanks == @codeword
       puts round_display
-      puts game_message(:win)
+      puts game_result(:win)
       true
     elsif @guesses_left == 0
-      puts game_message(:lose)
+      puts game_result(:lose)
     end
   end
 
@@ -78,5 +82,15 @@ class Game
       return true
     end
     false
+  end
+
+  def play_again?
+    input = ""
+    until ['y', 'n'].include?(input)
+      print game_message(:play_again)
+      input = gets.chomp.downcase
+      print "\e[1A\e[K"
+    end
+    input == 'y' ? true : false
   end
 end
