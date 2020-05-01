@@ -17,6 +17,8 @@ module TextContent
     clear_screen
     <<~HEREDOC
     #{WELCOME_TEXT}
+    Type 'save' to save and exit your game, and 'load'
+    to load a saved game.
 
     #{@blanks.center(50)}
 
@@ -67,7 +69,8 @@ module TextContent
   def game_error(error)
     message = {
       invalid_guess: "Please enter a letter.",
-      existing_guess: "Guess already exists."
+      existing_guess: "Guess already exists.",
+      invalid_input: "Invalid input."
     }[error]
     print "\e[K\e[41mERROR: #{message}\e[0m"
   end

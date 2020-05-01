@@ -5,6 +5,7 @@ require_relative "player"
 class Game
   include TextContent, Saving
   @@dictionary = File.readlines("lib/5desk.txt").keep_if { |word| word.length.between?(5, 12) }
+  @@commands = ["save", "load", "exit"]
 
   def initialize
     puts welcome
@@ -15,17 +16,17 @@ class Game
   public
 
   def play(playing = true)
-    while playing && !@saving
+    while playing && !@exit
       @player.guesses.clear
       @guesses_left = 7
       select_word
       while @guesses_left != 0
         play_round
-        break if player_wins? || @saving
+        break if player_wins? || @exit
       end
-      playing = play_again? unless @saving
+      playing = play_again? unless @exit
     end
-    puts game_message(:goodbye)
+    exit_game
   end
 
   private
@@ -65,13 +66,15 @@ class Game
       break if valid_guess?(@player.guess, @player.guesses)
       print "\e[1A\e[29D\e[K"
     end
-    @player.guesses << @player.guess unless ["save", "load"].include?(@player.guess)
+    @player.guesses << @player.guess unless @@commands.include?(@player.guess)
   end
 
   def check_guess(guess)
     if guess == "save"
-      @saving = true
+      @exit = true
       save_game
+    elsif guess == "exit"
+      @exit = true
     elsif guess == "load"
       load_game
     elsif @codeword.include?(guess)
@@ -106,7 +109,7 @@ class Game
   end
 
   def valid_guess?(guess, guesses)
-    return true if guess == "save" || guess == "load"
+    return true if @@commands.include?(guess)
     if guess.nil? || guess.length != 1 || !guess.match?(/[a-z]/)
       print game_error(:invalid_guess)
     elsif guesses.include?(guess)
@@ -125,5 +128,10 @@ class Game
       print "\e[1A\e[K"
     end
     input == 'y' ? true : false
+  end
+
+  def exit_game
+    puts game_message(:goodbye)
+    sleep(2)
   end
 end
