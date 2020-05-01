@@ -4,8 +4,4 @@ class Player
   def initialize
     @guesses = []
   end
-
-  def guess_code
-    @guess = gets.chomp.downcase
-  end
 end

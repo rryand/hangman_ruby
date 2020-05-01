@@ -24,6 +24,19 @@ module TextContent
     HEREDOC
   end
 
+  def load_screen(string)
+    clear_screen
+    <<~HEREDOC
+    #{LINE}
+    #{"LOAD GAME".center(50)}
+    #{LINE}
+    Enter the number of the file you would like to
+    load from.
+
+    #{string}
+    HEREDOC
+  end
+
   def continue
     print "Press enter to continue..."
     gets
@@ -37,7 +50,9 @@ module TextContent
   def game_message(message)
     {
       guess: "Enter your guess: ",
-      play_again: "Play again?(y/n) "
+      play_again: "Play again?(y/n) ",
+      goodbye: "Thank you for playing hangman! Goodbye!",
+      load: "Input: "
     }[message]
   end
 
