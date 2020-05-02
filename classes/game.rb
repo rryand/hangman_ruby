@@ -133,6 +133,6 @@ class Game
 
   def exit_game
     puts game_message(:goodbye)
-    sleep(2)
+    sleep(0.5)
   end
 end
