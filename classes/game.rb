@@ -26,7 +26,7 @@ class Game
       end
       playing = play_again? unless @exit
     end
-    exit_game
+    puts game_message(:goodbye)
   end
 
   private
@@ -129,10 +129,5 @@ class Game
       print "\e[1A\e[K"
     end
     input == 'y' ? true : false
-  end
-
-  def exit_game
-    puts game_message(:goodbye)
-    sleep(0.5)
   end
 end
