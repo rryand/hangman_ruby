@@ -39,7 +39,7 @@ class Game
 
   def play_round
     puts round_display
-    puts "DEBUG: codeword: #{@codeword}"
+    # puts "DEBUG: codeword: #{@codeword}"
     print_past_guesses
     get_guess
     check_guess(@player.guess)
@@ -64,7 +64,6 @@ class Game
     loop do
       @player.guess = get_input(:guess)
       break if valid_guess?(@player.guess, @player.guesses)
-      print "\e[1A\e[29D\e[K"
     end
     @player.guesses << @player.guess unless @@commands.include?(@player.guess)
   end
@@ -104,6 +103,7 @@ class Game
       puts game_result(:win)
       true
     elsif @guesses_left == 0
+      puts game_result(:reveal)
       puts game_result(:lose)
     end
   end
@@ -117,6 +117,7 @@ class Game
     else
       return true
     end
+    print "\e[1A\e[29D\e[K"
     false
   end
 

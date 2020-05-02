@@ -17,8 +17,9 @@ module TextContent
     clear_screen
     <<~HEREDOC
     #{WELCOME_TEXT}
-    Type 'save' to save and exit your game, and 'load'
-    to load a saved game.
+    Type: 'save' - save and exit
+          'load' - load a saved game
+          'exit' - exit game
 
     #{@blanks.center(50)}
 
@@ -26,14 +27,20 @@ module TextContent
     HEREDOC
   end
 
-  def load_screen(string)
+  def load_screen(delete_mode, string)
+    modes = ["delete", "load"]
+    title = delete_mode ? "delete" : "load"
     clear_screen
     <<~HEREDOC
     #{LINE}
-    #{"LOAD GAME".center(50)}
+    #{"#{title.upcase} GAME".center(50)}
     #{LINE}
+    Type: 'load' - load a game 
+          'delete' - delete a game
+          'exit' - exit screen
+
     Enter the number of the file you would like to
-    load from.
+    #{title}. 
 
     #{string}
     HEREDOC
@@ -61,7 +68,8 @@ module TextContent
   def game_result(result)
     message = {
       win: "You win! You saved the hangman!",
-      lose: "You lose. Better luck next time!"
+      lose: "You lose. Better luck next time!",
+      reveal: "The word was '#{@codeword}'."
     }[result]
     "#{LINE}\n#{message.center(50)}\n#{LINE}"
   end
